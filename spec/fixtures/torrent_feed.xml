@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Torrent site</title>
+    <link>http://example.org</link>
+    <description>Description</description>
+    <language>en</language>
+    <ttl>5</ttl>
+    <atom:link href="http://example.org/f026c837110c52c8ce5c" rel="self" type="application/rss+xml" />
+    <item>
+      <title><![CDATA[Torrent file title 1]]></title>
+      <pubDate>Fri, 13 May 2011 20:03:32 +0000</pubDate>
+      <category>Category</category>
+      <guid>http://example.org/torrent/1</guid>
+      <comments><![CDATA[http://example.org/torrent/1#comments]]></comments>
+      <link><![CDATA[http://example.org/rss/download/1/f026c837110c52c8ce5c/Torrent.file.title.1.torrent]]></link>
+      <description><![CDATA[A description]]></description>
+    </item>
+    <item>
+      <title><![CDATA[Torrent file title 2]]></title>
+      <pubDate>Fri, 12 May 2011 20:03:32 +0000</pubDate>
+      <category>Category</category>
+      <guid>http://example.org/torrent/2</guid>
+      <comments><![CDATA[http://example.org/torrent/2#comments]]></comments>
+      <link><![CDATA[http://example.org/rss/download/2/f026c837110c52c8ce5c/Torrent.file.title.2.torrent]]></link>
+      <description><![CDATA[A description]]></description>
+    </item>
+  </channel>
+</rss>

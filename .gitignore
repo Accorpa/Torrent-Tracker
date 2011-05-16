@@ -1,0 +1,9 @@
+.bundle
+db/*.sqlite3
+log/*.log
+tmp/
+rails_best_practices_output.html
+coverage/
+.sass-cache/
+.metrics
+NERD_tree*

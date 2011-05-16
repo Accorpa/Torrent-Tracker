@@ -1,0 +1,14 @@
+%h1 Listing torrents
+
+%table
+  %tr
+    %th Name
+    %th Category
+    %th Copied
+    %th
+  - @torrents.each do |torrent|
+    %tr
+      %td= torrent.title
+      %td= torrent.category
+      %td= (torrent.copied?) ? "Yes" : "No"
+      %td= link_to "Download", download_torrent_path(torrent)

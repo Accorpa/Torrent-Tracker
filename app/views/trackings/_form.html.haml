@@ -1,0 +1,17 @@
+%h1 Track a torrent
+= form_for @tracking do |f|
+  -if @tracking.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@tracking.errors.count, "error")} prohibited this tracking from being saved:"
+      %ul
+        - @tracking.errors.full_messages.each do |msg|
+          %li= msg
+
+  %p
+    = f.label :title, "Torrent title"
+    = f.text_field :title
+  %p
+    = f.label :destination, "Destination"
+    = f.text_field :destination
+  .actions
+    = f.submit 'Add'

@@ -1,0 +1,20 @@
+%h1 Listing trackings
+
+%table
+  %tr
+    %th
+    %th
+    %th
+    %th
+
+  - @trackings.each do |tracking|
+    %tr
+      %td= tracking.title
+      %td= link_to 'Show', tracking
+      %td= link_to 'Edit', edit_tracking_path(tracking)
+      %td= link_to 'Destroy', tracking, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Tracking', new_tracking_path
+= link_to 'Feeds', feeds_path
