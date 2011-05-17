@@ -21,7 +21,7 @@ class Feed < ActiveRecord::Base
       items.flatten
     end
   end
-  
+
   def save_new_torrent_data
     download_torrent_data.each do |rss_torrent|
       torrent = Torrent.find_or_initialize_by_link(rss_torrent.link)
@@ -37,7 +37,7 @@ class Feed < ActiveRecord::Base
   end
 
   private
-  
+
   def save_rss_data_to_torrent(torrent, rss_torrent)
     torrent.title = rss_torrent.title
     torrent.published = rss_torrent.pubDate.to_datetime
@@ -45,6 +45,4 @@ class Feed < ActiveRecord::Base
     torrent.description = rss_torrent.description
     torrent.save
   end
-
-  
 end

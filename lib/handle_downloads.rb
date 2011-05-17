@@ -13,10 +13,9 @@ class HandleDownloads < Struct.new(:torrent_location, :torrent_filename)
   private
 
   def handle_files_in_download_folder
-    Dir.chdir downloaded_files_folder do
-      Dir["**"].each do |folder|
-        handle_files_in add_pwd_to(folder)
-      end
+    Dir.chdir downloaded_files_folder
+    Dir["**"].each do |folder|
+      handle_files_in add_pwd_to(folder)
     end
   end
 
@@ -54,7 +53,7 @@ class HandleDownloads < Struct.new(:torrent_location, :torrent_filename)
       torrent.copied!
     end
   end
-  
+
   def copy_files_to(destination)
     Dir[TARGET_FILES].each do |file|
       FileUtils.makedirs destination

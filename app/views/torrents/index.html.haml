@@ -7,7 +7,7 @@
     %th Published
     %th Feed
     %th
-    %th 
+    %th
     %th
   - @torrents.each do |torrent|
     %tr
@@ -18,7 +18,7 @@
       %td= (torrent.copied?) ? "Copied" : "Not copied"
       %td= (torrent.downloaded?) ? "Downloaded" : "Not downloaded"
       %td= link_to "Download", download_torrent_path(torrent)
-    - if torrent.description.present?
+    - if torrent.description?
       %tr
         %td{:colspan => 6}= torrent.description.html_safe
 

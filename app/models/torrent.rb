@@ -34,7 +34,7 @@ class Torrent < ActiveRecord::Base
     end
 
     def is_matching?(tracking, torrent)
-      torrent.title.match(tracking.title) && 
+      torrent.title.match(tracking.title) &&
       (tracking.categories.nil? || tracking.categories.include?(torrent.category))
     end
 

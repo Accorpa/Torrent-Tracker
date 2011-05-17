@@ -1,10 +1,10 @@
 %h1 Track a torrent
-= form_for @tracking do |f|
-  -if @tracking.errors.any?
+= form_for tracking do |f|
+  -if tracking.errors.any?
     #error_explanation
-      %h2= "#{pluralize(@tracking.errors.count, "error")} prohibited this tracking from being saved:"
+      %h2= "#{pluralize(tracking.errors.count, "error")} prohibited this tracking from being saved:"
       %ul
-        - @tracking.errors.full_messages.each do |msg|
+        - tracking.errors.full_messages.each do |msg|
           %li= msg
 
   %p
@@ -15,7 +15,7 @@
     = f.text_field :destination
   %p
     - Torrent.categories.each do |category|
-      = check_box_tag "tracking[categories][]", category, @tracking.has_category?(category), :id => category.parameterize
+      = check_box_tag "tracking[categories][]", category, tracking.has_category?(category), :id => category.parameterize
       = label_tag category.parameterize, category
   .actions
     = f.submit 'Add'
