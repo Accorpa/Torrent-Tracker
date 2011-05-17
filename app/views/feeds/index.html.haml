@@ -1,21 +1,23 @@
 %h1 Listing feeds
+= link_to_function "Toggle panel", "panel.toggle()"
 
-%table
-  %tr
-    %th
-    %th
-    %th
-    %th
-    %th
-
-  - @feeds.each do |feed|
+#panel
+#entries_container
+  %table
     %tr
-      %td= feed.name
-      %td= link_to 'Show', feed
-      %td= link_to 'Edit', edit_feed_path(feed)
-      %td= link_to 'Destroy', feed, :confirm => 'Are you sure?', :method => :delete
+      %th
+      %th
+      %th
+      %th
+      %th
 
-%br
+    - @feeds.each do |feed|
+      %tr
+        %td= feed.name
+        %td= link_to 'Edit', edit_feed_path(feed)
+        %td= link_to 'Destroy', feed, :confirm => 'Are you sure?', :method => :delete
+
+  %br
 
 = link_to 'New Feed', new_feed_path
 = link_to 'Trackings', trackings_path
