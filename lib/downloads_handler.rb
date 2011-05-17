@@ -1,4 +1,4 @@
-class HandleDownloads < Struct.new(:torrent_location, :torrent_filename)
+class DownloadsHandler < Struct.new(:torrent_location, :torrent_filename)
   TARGET_FILES = "*.{avi,mkv,mov,mpg,mp4,srt}"
 
   def perform(test = "")

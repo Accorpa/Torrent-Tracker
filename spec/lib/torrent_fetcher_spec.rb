@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-describe FetchTorrents do
+describe TorrentFetcher do
   describe "self.perform" do
     it "downloads all new torrents" do
       stub_feed_url Factory(:feed).url, "torrent_feed.xml"
       Factory :tracking, :title => ".*"
       stub_torrent_url
-      FetchTorrents.perform
+      TorrentFetcher.perform
       %w(1 2).each do |nr|
         File.exists?("#{Torrent.download_folder}/Torrent file title #{nr}.torrent").should be_true
       end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe HandleDownloads do
+describe DownloadsHandler do
 
   describe "perform" do
     before do
@@ -24,31 +24,31 @@ describe HandleDownloads do
 
     it "only extracts and copies each torrent once" do
       FileUtils.should_receive(:cp).twice # once for packed and once for unpacked
-      handler = HandleDownloads.new
+      handler = DownloadsHandler.new
       handler.perform
       handler.perform
     end
 
     it "unpacks packed files" do
-      HandleDownloads.new.perform
+      DownloadsHandler.new.perform
       File.exists?("#{Rails.root}/spec/fixtures/downloads/example_packed/a movie.avi").should be_true
     end
 
     it "upacks files only once" do
-      handler = HandleDownloads.new
+      handler = DownloadsHandler.new
       handler.perform
       handler.should_not_receive(:extract_file)
       handler.perform
     end
 
     it "copies the file to the target directory" do
-      HandleDownloads.new.perform
+      DownloadsHandler.new.perform
       File.exists?(@tracking_packed.destination + "/a movie.avi").should be_true
     end
 
     context "without specific torrent location provided" do
       it "handles all torrents in download directory" do
-        HandleDownloads.new.perform
+        DownloadsHandler.new.perform
         File.exists?(@tracking_packed.destination + "/a movie.avi").should be_true
         File.exists?(@tracking_unpacked.destination + "/another movie.avi").should be_true
       end
@@ -57,7 +57,7 @@ describe HandleDownloads do
 
     context "with specific torrent location provided" do
       it "handles only that torrent" do
-        HandleDownloads.new("#{Rails.root}/spec/fixtures/downloads","example_packed.torrent").perform
+        DownloadsHandler.new("#{Rails.root}/spec/fixtures/downloads","example_packed.torrent").perform
         File.exists?(@tracking_packed.destination + "/a movie.avi").should be_true
         File.exists?(@tracking_unpacked.destination + "/another movie.avi").should be_false
       end
