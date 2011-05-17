@@ -27,13 +27,7 @@ class Torrent < ActiveRecord::Base
 
   def download
     create_download_folder
-    uri = URI.parse(link)
-    Net::HTTP.start(uri.host, uri.port) do |http|
-      response = http.get(uri.path)
-      open("#{Torrent.download_folder}/#{title}.torrent", "wb") do |file|
-        file.write response.body
-      end
-    end
+    save_torrent_file
   end
 
   def copied!
@@ -46,12 +40,26 @@ class Torrent < ActiveRecord::Base
 
   private
 
+
   def create_download_folder
     FileUtils.mkdir_p Torrent.download_folder
   end
 
+  def save_torrent_file
+    uri = URI.parse(link)
+    Net::HTTP.start(uri.host, uri.port) do |http|
+      write_response_to_file http.get(uri.path)
+    end
+  end
+
   def extract_filename_from_link
     self.filename = File.basename(link) unless link.nil?
+  end
+
+  def write_response_to_file(response)
+    open("#{Torrent.download_folder}/#{title}.torrent", "wb") do |file|
+      file.write response.body
+    end
   end
 
 end

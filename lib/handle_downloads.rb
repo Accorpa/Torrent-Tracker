@@ -50,8 +50,7 @@ class HandleDownloads < Struct.new(:torrent_location, :torrent_filename)
   def copy_files
     torrent = Torrent.includes(:tracking).where(:filename => directory_to_torrent_filename).first
     if torrent && torrent.copied == false && torrent.destination
-      destination = File.expand_path torrent.destination  
-      copy_files_to destination
+      copy_files_to File.expand_path(torrent.destination)
       torrent.copied!
     end
   end
