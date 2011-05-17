@@ -2,44 +2,66 @@ require 'net/http'
 
 class Torrent < ActiveRecord::Base
   belongs_to :tracking
+  belongs_to :feed
 
   delegate :destination, :to => :tracking
+  delegate :name, :to => :feed, :prefix => true, :allow_nil => true
 
   validates :title, :link, :published, :presence => true
 
   before_validation :extract_filename_from_link
 
-  scope :unmatched, where(:tracking_id => nil)
+  class << self
+    def unmatched
+      Torrent.where(:tracking_id => nil)
+    end
+    def categories
+      Torrent.group("category").collect(&:category)
+    end
 
-  def self.match(*trackings)
-    matches = []
-    torrents = Torrent.unmatched
-    trackings.flatten.each do |tracking|
-      torrents.each do |torrent|
-        if torrent.title.match(tracking.title)
-          matches << torrent
-          tracking.torrents << torrent
+    def match(*trackings)
+      matches = []
+      torrents = Torrent.unmatched
+      trackings.flatten.each do |tracking|
+        torrents.each do |torrent|
+          if is_matching?(tracking, torrent)
+            matches << torrent
+            tracking.torrents << torrent
+          end
         end
       end
+      matches
     end
-    matches
+
+    def is_matching?(tracking, torrent)
+      torrent.title.match(tracking.title) && 
+      (tracking.categories.nil? || tracking.categories.include?(torrent.category))
+    end
+
+    def download_folder
+      File.expand_path(TorrentTracker::Application.settings[:torrent_download_folder])
+    end
   end
 
   def download
     create_download_folder
     save_torrent_file
+    downloaded!
   end
 
   def copied!
     update_attribute :copied, true
   end
 
-  def self.download_folder
-    File.expand_path(TorrentTracker::Application.settings[:torrent_download_folder])
+  def downloaded!
+    update_attribute :downloaded, true
+  end
+
+  def is_category?(category)
+    self.category == category
   end
 
   private
-
 
   def create_download_folder
     FileUtils.mkdir_p Torrent.download_folder

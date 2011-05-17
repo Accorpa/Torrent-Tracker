@@ -4,11 +4,23 @@
   %tr
     %th Name
     %th Category
-    %th Copied
+    %th Published
+    %th Feed
+    %th
+    %th 
     %th
   - @torrents.each do |torrent|
     %tr
       %td= torrent.title
       %td= torrent.category
-      %td= (torrent.copied?) ? "Yes" : "No"
+      %td= torrent.published.to_s(:short)
+      %td= torrent.feed_name
+      %td= (torrent.copied?) ? "Copied" : "Not copied"
+      %td= (torrent.downloaded?) ? "Downloaded" : "Not downloaded"
       %td= link_to "Download", download_torrent_path(torrent)
+    - if torrent.description.present?
+      %tr
+        %td{:colspan => 6}= torrent.description.html_safe
+
+= link_to 'Feeds', feeds_path
+= link_to 'Trackings', trackings_path

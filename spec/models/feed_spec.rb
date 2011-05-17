@@ -37,6 +37,19 @@ describe Feed do
       Feed.save_all_new_torrent_data
       Torrent.first.category.should == "Category"
     end
+
+    it "updated data to existing torrents" do
+      Feed.save_all_new_torrent_data
+      Torrent.first.description.should == "A description"
+      stub_feed_url @feed.url, "updated_torrent_feed.xml"
+      Feed.save_all_new_torrent_data
+      Torrent.first.description.should == "A new description"
+    end
+
+    it "associates each torrent to the feed" do
+      Feed.save_all_new_torrent_data
+      @feed.torrents.should have(2).torrents
+    end
   end
 
   def stub_feed_url(url, filename)

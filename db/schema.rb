@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110516215350) do
+ActiveRecord::Schema.define(:version => 20110517072500) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -46,8 +46,11 @@ ActiveRecord::Schema.define(:version => 20110516215350) do
     t.integer  "tracking_id"
     t.string   "filename"
     t.boolean  "copied",      :default => false
+    t.integer  "feed_id"
+    t.boolean  "downloaded",  :default => false
   end
 
+  add_index "torrents", ["feed_id"], :name => "index_torrents_on_feed_id"
   add_index "torrents", ["filename"], :name => "index_torrents_on_filename"
   add_index "torrents", ["tracking_id"], :name => "index_torrents_on_tracking_id"
 
@@ -56,6 +59,7 @@ ActiveRecord::Schema.define(:version => 20110516215350) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "destination"
+    t.text     "categories"
   end
 
 end

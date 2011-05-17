@@ -39,4 +39,22 @@ describe Tracking do
       tracking.reload.torrents.should have(1).torrent
     end
   end
+
+
+  describe ".has_category?" do
+    it "returns false if categories is nil" do
+      tracking = Factory :tracking, :categories => nil
+      tracking.has_category?("Category 1").should be_false
+    end
+
+    it "returns true if category is in categories" do
+      tracking = Factory :tracking, :categories => ["Category 1", "Category 2"]
+      tracking.has_category?("Category 1").should be_true
+    end
+
+    it "returns false if category is not in categories" do
+      tracking = Factory :tracking, :categories => ["Category 1", "Category 2"]
+      tracking.has_category?("Category 3").should be_false
+    end
+  end
 end

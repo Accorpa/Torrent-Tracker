@@ -2,28 +2,31 @@ require 'rss/1.0'
 require 'rss/2.0'
 
 class Feed < ActiveRecord::Base
+  has_many :torrents
+
   validates :url, :name, :presence => true
 
-  def self.save_all_new_torrent_data
-    Feed.all.each do |feed|
-      feed.save_new_torrent_data
+  class << self
+    def save_all_new_torrent_data
+      Feed.all.each do |feed|
+        feed.save_new_torrent_data
+      end
     end
-  end
 
-  def self.download_all_torrent_data
-    items = []
-    Feed.all.each do |feed|
-      items << feed.download_torrent_data
+    def download_all_torrent_data
+      items = []
+      Feed.all.each do |feed|
+        items << feed.download_torrent_data
+      end
+      items.flatten
     end
-    items.flatten
   end
   
   def save_new_torrent_data
     download_torrent_data.each do |rss_torrent|
       torrent = Torrent.find_or_initialize_by_link(rss_torrent.link)
-      if torrent.new_record?
-        save_rss_data_to_torrent(torrent, rss_torrent)
-      end
+      self.torrents << torrent if torrent.new_record?
+      save_rss_data_to_torrent(torrent, rss_torrent)
     end
   end
 

@@ -2,7 +2,8 @@
 
 %table
   %tr
-    %th
+    %th Title
+    %th Categoris
     %th
     %th
     %th
@@ -10,6 +11,7 @@
   - @trackings.each do |tracking|
     %tr
       %td= tracking.title
+      %td= (tracking.categories) ? tracking.categories.to_sentence : "No category"
       %td= link_to 'Show', tracking
       %td= link_to 'Edit', edit_tracking_path(tracking)
       %td= link_to 'Destroy', tracking, :confirm => 'Are you sure?', :method => :delete
@@ -18,3 +20,4 @@
 
 = link_to 'New Tracking', new_tracking_path
 = link_to 'Feeds', feeds_path
+= link_to 'Torrents', torrents_path

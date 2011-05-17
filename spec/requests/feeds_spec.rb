@@ -16,6 +16,12 @@ describe "Feeds" do
       click_link "Trackings"
       current_path.should == trackings_path
     end
+
+    it "has a link to torrents" do
+      visit feeds_path
+      click_link "Torrents"
+      current_path.should == torrents_path
+    end
   end
 
   describe "POST /feeds" do

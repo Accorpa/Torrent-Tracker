@@ -16,15 +16,31 @@ describe Torrent do
     torrent.filename.should == "Torrent.title.torrent"
   end
 
+  describe "self.categories" do
+    it "gets all the different categories" do
+      Factory :torrent, :category => "Category 1"
+      Factory :torrent, :category => "Category 2"
+      Torrent.categories.should == ["Category 1", "Category 2"]
+    end
+  end
   describe "self.match" do
     it "finds a torrent that matches a title" do
       Factory :torrent, :title => "An example title"
       tracking = Factory :tracking, :title => "An example title"
       Torrent.match(tracking).should have(1).torrent
     end
+
+    it "finds the torrent in correct category" do
+      Factory :torrent, :title => "An example title 1", :category => "Category 1"
+      Factory :torrent, :title => "An example title 2", :category => "Category 1"
+      Factory :torrent, :title => "An example title 3", :category => "Category 2"
+      Factory :torrent, :title => "An example title 4", :category => "Category 3"
+      tracking = Factory :tracking, :title => "An example title [1-4]", :categories => ["Category 1", "Category 3"]
+      Torrent.match(tracking).should have(3).torrents
+    end
   end
 
-  describe "scope unmatched" do
+  describe "self.unmatched" do
     it "finds all unmatched torrents" do
       tracking = Factory :tracking
       Factory :torrent, :tracking => tracking
@@ -49,6 +65,11 @@ describe Torrent do
       File.exists?(@file_path).should be_true
     end
 
+    it "sets the torrent as downloaded" do
+      @torrent.download
+      @torrent.should be_downloaded
+    end
+
     it "creates the destination folder if i doesn't exist" do
       TorrentTracker::Application.settings[:torrent_download_folder] += "/a/folder"
       @file_path = "#{TorrentTracker::Application.settings[:torrent_download_folder]}/#{@torrent.title}.torrent"
@@ -58,6 +79,25 @@ describe Torrent do
 
     after do
       File.delete(@file_path) if File.exists?(@file_path)
+    end
+  end
+
+  describe ".is_category?" do
+    it "returns true if torrent is provided category" do
+      torrent = Factory :torrent, :category => "Category 1"
+      torrent.is_category?("Category 1").should be_true
+    end
+
+    it "returns false if torrent is not provided category" do
+      torrent = Factory :torrent, :category => "Category 1"
+      torrent.is_category?("Category 2").should be_false
+    end
+  end
+  describe ".downloaded!" do
+    it "sets torrent as downloaded" do
+      torrent = Factory :torrent, :downloaded => false
+      torrent.downloaded!
+      torrent.should be_downloaded
     end
   end
 
